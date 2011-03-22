@@ -281,6 +281,8 @@ Wie oben, allerdings erhält der Benutzer Shell-Zugriff, zum Beispiel per SSH::
 
     $ sudo adduser benutzer1
 
+.. _hostsfile:
+
 Die Datei /etc/hosts
 --------------------
 
@@ -295,12 +297,17 @@ man die Datei mit einem Texteditor und fügt Zeilen im folgenden Format ein::
 
     <IP-Adresse> <Rechnername.Domain> <Rechnername>
 
+oder alternativ:::
+
+    <IP-Adresse> <Rechnername>
+
 Also zum Beispiel
 
 ::
 
     192.168.0.210 rechner1.daheim.lan rechner1
     192.168.0.211 rechner2.daheim.lan rechner2
+    192.168.0.212 rechner3
 
 Nach dem Editieren kann mit dem Befehl ``host`` überprüft werden ob alles
 wunschgemäß funktioniert:: 
