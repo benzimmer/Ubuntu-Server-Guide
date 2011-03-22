@@ -159,27 +159,94 @@ lose oder kaputte Kabel ausschließen kann).
 Update des Systems
 ------------------
 
+Manuelle Upgrades
+~~~~~~~~~~~~~~~~~
+
 Nachdem die Verbindung ins Netz steht, sollte im nächsten Schritt das System
 auf den aktuellen Stand gebracht werden. Ubuntu bringt dafür das Werkzeug
 ``apt-get`` mit:
 
-sudo apt-get update
+``sudo apt-get update``
     Aktualisiert die Paketdatenbank vom Update-Server
 
-sudo apt-get upgrade
+``sudo apt-get upgrade``
     Lädt aktualisierbare Pakete vom Server herunter und installiert diese.
 
-sudo apt-get dist-upgrade
+``sudo apt-get dist-upgrade``
     Wenn ein Update es erfordert, dass ein Paket zusätzlich installiert
     (upgraden != installieren) werden muss, geht dies nur über
-    ``apt-get dist-upgrade``. Dazu gehören zum Beispiel einige `Kernel 
+    ``apt-get dist-upgrade``. Dazu gehören zum Beispiel `Kernel
     <http://de.wikipedia.org/wiki/Betriebssystemkern>`_-Updates, da hier nicht
     der aktuelle Kernel überschrieben (geupgradet) wird, sondern der neue
     zusätzlich *installiert* wird. ``apt-get upgrade`` weist darauf hin, wenn
     solche Pakete verfügbar sind.
 
-.. warning:: 
-    
+Automatische Upgrades
+~~~~~~~~~~~~~~~~~~~~~
+
+Alternativ gibt es die Möglichkeit Updates automatisch installieren zu lassen.
+Dazu muss zunächst das Paket ``unattended-upgrades`` installiert werden:::
+
+  sudo apt-get install unattended-upgrades
+
+Um die Automatik auch zu aktivieren sind noch ein paar kleine Einstellungen von
+nöten. Dazu schaut man sich zunächst die Konfigurationsdatei
+``/etc/apt/apt.conf.d/50unattended-upgrades`` an:::
+
+  sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
+
+Hier die Abschnitte der Datei im Detail:
+
+::
+
+  // Automatically upgrade packages from these (origin, archive) pairs
+  Unattended-Upgrade::Allowed-Origins {
+          "Ubuntu lucid-security";
+  //      "Ubuntu lucid-updates";
+  };
+
+Dieser Teil führt dazu, dass lediglich Sicherheits-Updates automatisch installiert werden.
+Möchte man alle Arten von Upgrades aktivieren, entfernt man einfach die beiden ``//`` vor der Zeile
+``"Ubuntu lucid-updates";``.
+
+::
+
+  // List of packages to not update
+  Unattended-Upgrade::Package-Blacklist {
+  //      "vim";
+  //      "libc6";
+  //      "libc6-dev";
+  //      "libc6-i686";
+  };
+
+Hier kann man das automatische Update daran hindern, bestimmte Pakete auf den neuesten Stand zu bringen.
+Gelegentlich ist das nötig wenn man auf eine bestimmte Version eines Programmes angewiesen ist. Dazu trägt
+man den Paketnamen in die Liste ein, natürlich ohne die ``//``.
+
+::
+
+  //Unattended-Upgrade::Remove-Unused-Dependencies "false";
+
+In dem man hier die ``//`` entfernt und ``false`` in ``true`` umschreibt, erlaubt man es, das nicht mehr benötigte Pakete
+automatisch entfernt werden.
+
+Die restlichen Einstellungen sollen an dieser Stelle unbetrachtet bleiben, da sie für den Grundbetrieb nicht notwendig
+sind, bzw. zusätzliche Software benötigen.
+
+Um das periodische Aktualisieren zu aktivieren muss noch die Datei ``/etc/apt/apt.conf.d/10periodic`` bearbeitet
+werden, so dass sie folgenden Inhalt enthält:::
+
+  APT::Periodic::Update-Package-Lists "1";
+  APT::Periodic::Download-Upgradeable-Packages "1";
+  APT::Periodic::AutocleanInterval "7";
+  APT::Periodic::Unattended-Upgrade "1";
+
+Zeile 1 und 2 aktiviert das Aktualisieren der Paketlisten und das Herunterladen der zu aktualisierenden Pakete.
+Zeile 3 stellt das Intervall ein, in dem nicht mehr benötigte Pakete vom System entfernt werden.
+Zeile 4 schließlich erledigt die eigentliche Aktivierung des automatischen Aktualisierung.
+
+.. warning::
+
     Das System sollte immer auf dem aktuellen Stand gehalten werden.
     Informationen über neue Sicherheitsupdates bieten zum Beispiel
     die `Ubuntu Security Notices <http://www.ubuntu.com/usn/>`_. Diese
