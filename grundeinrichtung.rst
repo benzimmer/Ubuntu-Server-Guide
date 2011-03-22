@@ -210,13 +210,29 @@ hinzu, so dass die Zeile am Ende so aussieht::
 
 Der Server von dem die Zeit letztlich bezogen wird ist beliebig wählbar,
 *de.pool.ntp.org* ist hier als Beispiel genannt, weitere Server finden sich
-unter http://www.pool.ntp.org/. Nach der Konfigurationsänderung muss der
-Dienst noch einmal neu gestartet werden und holt dann in regelmäßigen
-Abständen die richtige Zeit aus dem Netz.
+unter http://www.pool.ntp.org/.
+
+Falls der Zeitserver von anderen Rechnern im Netz zu Zeit-Synchronisation
+benutzt werden soll, muss die Zeile
 
 ::
 
-    $ sudo /etc/init.d/ntp restart
+  restrict 127.0.0.1
+
+zu
+
+::
+
+  #restrict 127.0.0.1
+
+umgeschrieben werden.
+
+Nach der Konfigurationsänderung muss der Dienst noch einmal neu gestartet
+werden und holt dann in regelmäßigen Abständen die richtige Zeit aus dem Netz.
+
+::
+
+    $ sudo service ntp restart
 
 .. note::
 
