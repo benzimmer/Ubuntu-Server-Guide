@@ -101,6 +101,21 @@ sollte wird später in der Konfiguration des Servers vermerkt, dass die
 Passwörter zwischen System und Samba ab geglichen werden. Der obige Schritt
 muss also nur einmal erfolgen.
 
+Zusätzlich kennt ``smbpasswd`` noch folgende Schalter:
+
+Entfernt den Benutzer <username> aus der Samba Datenbank::
+
+  sudo smbpasswd -x <username>
+
+Deaktiviert den Benutzer <username> in der Datenbank::
+
+  sudo smbpasswd -d <username>
+
+Aktiviert den vorher deaktivierten Benutzer <username> in der Datenbank wieder::
+
+  sudo smbpasswd -e <username>
+
+
 Konfiguration
 _____________
 
@@ -133,14 +148,16 @@ der die Konfigurationsdatei 'smb.conf' in der Regel beginnt:
 ::
 
     [global]
-    workgroup = ARBEITSGRUPPE
-    server string = Samba Server auf %h
-    wins support = yes
-    os level = 33
-    local master = yes
-    ;wins server = w.x.y.z
-    unix password sync = yes
-    passwd program = /usr/bin/passwd %u
+      workgroup = ARBEITSGRUPPE
+      server string = Samba Server auf %h
+      wins support = yes
+      os level = 33
+      local master = yes
+      ;wins server = w.x.y.z
+      unix password sync = yes
+      passwd program = /usr/bin/passwd %u
+      passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully*
+      pam password change = yes
 
 Für einfaches Filesharing ist das schon genug der Einstellung. Die
 Zeile 'wins support' sollte falls man einen Windows-Server im
@@ -167,12 +184,13 @@ Sektion an mit dem Namen 'public'. Zuerst erstellen wir allerdings
 das Verzeichnis und setzen die Benutzerrechte so, das die Benutzer
 der Gruppe 'users', darauf zugreifen können:
 
+.. todo:: check samba permissions
+
 ::
 
   sudo mkdir /srv/public
-  sudo chmod o-rwx /srv/public
   sudo chgrp users /srv/public
-  sudo chmod g+sw /srv/public
+  sudo chmod 775 /srv/public
 
 Zeile 1 legt das Verzeichnis (das Überverzeichnis **/srv** ist für
 solche Serverdienste reserviert, also nutzen wir das hier auch mal)
@@ -187,30 +205,43 @@ Dann wird die Freigabe in die ``smb.conf`` eingetragen:
 ::
 
     [public]
-    comment = Freigabe fuer jedermann
-    path = /srv/public
-    writeable = yes
-    valid users = @users
-    force directory mode = 660
-    force create mode = 660
+      comment = Freigabe fuer jedermann
+      path = /srv/public
+      writeable = yes
+      valid users = @users
+      force directory mode = 0775
+      force create mode = 0775
 
 In der Zeile comment gibt man am besten eine Beschreibung des
 Verzeichnisses an (kann auch weggelassen werden), in der Zeile path
-gibt man den Pfad zum eben angelegten Verzeichnis an. *writeable*
+gibt man den Pfad zum eben angelegten Verzeichnis an. ``writeable``
 sorgt dafür das das Schreiben in das Verzeichnis möglich ist. Die
-letzten drei Zeilen sind für die Zugriffsrechte zuständig: *valid
-users* zeigt hier an das die Gruppe *users*, deutlich gemacht durch
+letzten drei Zeilen sind für die Zugriffsrechte zuständig: ``valid
+users`` zeigt hier an das die Gruppe *users*, deutlich gemacht durch
 das @, Zugriff hat. Einzelne Benutzer werden ohne @ durch Komma
 getrennt eingetragen. Die anderen beiden Zeilen sorgen dafür, das
 neu angelegte Dateien und Verzeichnisse von den Benutzern der
 Gruppe *users* Les- und Schreibbar sind.
 
-Damit können wir unseren Server auch schon testen, ``smb.conf``
+Zusätzlich werden wir noch jedem Benutzer ein Home-Verzeichnis freigeben,
+in dem nur er lesen und schreiben darf. Dazu fügen wir folgenden Abschnitt in
+die ``smb.conf`` ein.
+
+::
+
+  [homes]
+    comment = Home Directories
+    browseable = no
+    read only = no
+    create mask = 0700
+    directory mask = 0700
+
+Danach können wir unseren Server auch schon testen, ``smb.conf``
 abspeichern und mit ``testparm -v`` prüfen ob die gemachten
 Konfigurationen Fehler enthalten. Das Konsolenprogramm gibt die
 komplette Konfiguration aus und zeigt eventuelle Fehler an. Wenn
 die Einstellungen fehlerfrei sind, wird der Server mit ``sudo
-service samba restart``, neu gestartet. Danach sollte man testen
+service smbd restart``, neu gestartet. Danach sollte man testen
 ob die Freigabe aus dem Netzwerk erreichbar ist. Dazu einfach mit
 einem geeigneten Client (Linux, Windows, Mac) versuchen auf die
 Freigabe zuzugreifen. Dabei sollte der eingerichtete Benutzer und
