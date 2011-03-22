@@ -111,19 +111,11 @@ gekennzeichnet:
 Falls ein Befehl zu lang ist für eine Zeile wird dieser in der nächsten Zeile
 fortgeführt. Gekennzeichnet wird das durch einen Pfeil:
 
+.. todo:: Zeilenumbrüche testen
+
 ::
 
     $ sudo openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/ssl/apache.pem
-
-.. todo:: URL-Shortener
-
-Des öfteren werden dem Leser Internet-Adressen der Form
-http://url.zeroathome.de/xyz begegnen. Dies ist leider nötig, da manche
-URLs einfach zu lang sind um sie in einem PDF auf einer Zeile auszugeben.
-Ich versichere hiermit, dass sich hinter diesen Kurz-URLs keinerlei von mir
-bereitgestellter Schadcode befindet. Es handelt sich lediglich um Seiten,
-die zur weiteren Erklärung der in den Tutorials verwendeten Begrifflichkeiten
-oder Tools dienen.
 
 Disclaimer
 ----------
@@ -146,4 +138,4 @@ Bedingungen 3.0 Deutschland" Lizenzvertrag lizenziert. Die komplette Lizenz
 finden Sie unter http://creativecommons.org/licenses/by-nc-sa/3.0/de/.
 
 Falls Sie Fragen zur Verwendung haben, wenden Sie sich bitte per Mail an
-zero@zeroathome.de oder per Jabber an zeroathome@jabber.ccc.de
+zero@zeroathome.de oder per Jabber an ben@einfachjabber.de
