@@ -242,16 +242,18 @@ werden und holt dann in regelmäßigen Abständen die richtige Zeit aus dem Netz
     verhindert, dass Dienste, die mit einem größeren Sprung in der Zeit nicht
     zu Recht kommen, nicht aus dem Tritt geraten. 
 
+.. _usergroups:
+
 Benutzer und Gruppen
 --------------------
 
-Da die meisten Dienste die Systembenutzer dazu verwenden können, um die
+Da die meisten Dienste die im System hinterlegten Benutzer dazu verwenden, um die
 Zugriffsrechte auf Dateifreigaben oder Lese- und Schreibrechte auf Dateien zu
-verwalten muss jeder Benutzer, der Zugriff zu Daten auf dem Server erhalten
-soll zunächst im System ein Konto erhalten.
+verwalten, muss jeder Benutzer, der Zugriff zu Daten auf dem Server erhalten
+soll, zunächst im System ein Konto erhalten.
 
 Um Dateien und Ordern mehreren Benutzern zugänglich zu machen, gibt es zudem
-noch Gruppen. Wenn man einer Gruppe Rechte an, zum Beispiel, einem Ordner gibt,
+Gruppen. Wenn man einer Gruppe Rechte an, zum Beispiel, einem Ordner gibt,
 erbt automatisch jedes Mitglied dieser Gruppe die Rechte.
 
 Linux stellt für die Verwaltung von Benutzern und Gruppen zwei Werkzeuge bereit.
