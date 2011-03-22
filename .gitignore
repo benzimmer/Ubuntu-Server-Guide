@@ -1,3 +1,5 @@
 .DS_Store
+*.pyc
+fabfile.py
 
 _build
