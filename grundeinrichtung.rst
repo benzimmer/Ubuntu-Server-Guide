@@ -46,7 +46,7 @@ die vorhandenen Netzwerkschnittstellen und die ihnen zugewiesenen Adressen.
 
 ::
 
-    $ ifconfig 
+    $ ifconfig
     eth0      Link encap:Ethernet  Hardware Adresse 08:00:27:61:3f:9c  
             inet Adresse:192.168.0.254  Bcast:192.168.103.255  Maske:255.255.255.0
             inet6-Adresse: fe80::a00:27ff:fe61:3f9c/64 Gültigkeitsbereich:Verbindung
@@ -56,7 +56,7 @@ die vorhandenen Netzwerkschnittstellen und die ihnen zugewiesenen Adressen.
             Kollisionen:0 Sendewarteschlangenlänge:1000 
             RX bytes:911376 (911.3 KB)  TX bytes:19157 (19.1 KB)
 
-    lo        Link encap:Lokale Schleife  
+    lo        Link encap:Lokale Schleife
             inet Adresse:127.0.0.1  Maske:255.0.0.0
             inet6-Adresse: ::1/128 Gültigkeitsbereich:Maschine
             UP LOOPBACK RUNNING  MTU:16436  Metrik:1
@@ -106,27 +106,27 @@ der Eintrag für **eth0** folgendermaßen abgeändert werden:
 
     auto eth0
     iface eth0 inet static
-    address 192.168.0.254
-    netmask 255.255.255.0
-    gateway 192.168.0.1
-    dns-nameservers 192.168.0.1    
+      address 192.168.0.254
+      netmask 255.255.255.0
+      gateway 192.168.0.1
+      dns-nameservers 192.168.0.1
 
 Das ``dhcp`` in Zeile 2 wird durch ``static`` ersetzt. In Zeile 3 die
-Adresse zugeteilt: ``address 192.168.0.254``, in Zeile 4 die `Netzmaske 
-<http://de.wikipedia.org/wiki/Netzmaske>`_: ``netmask 255.255.255.0`` und in 
+Adresse zugeteilt: ``address 192.168.0.254``, in Zeile 4 die `Netzmaske
+<http://de.wikipedia.org/wiki/Netzmaske>`_: ``netmask 255.255.255.0`` und in
 Zeile 5 das Gateway, in der Regel die Adresse des zuständigen Routers im
 Netzwerk: ``gateway 192.168.0.1``. Zusätzlich sollte wie in Zeile 6 auch noch
 mindestens ein `DNS <http://de.wikipedia.org/wiki/Domain_Name_System>`_-Server
 angegeben werden. In der Regel ist auch hier die Adresse des lokalen Routers
 einzutragen: ``dns-nameservers 192.168.0.1``. Die Angaben sollten natürlich an
-das jeweilige Netzwerk und die eigenen Bedürfnisse angepasst werden. 
+das jeweilige Netzwerk und die eigenen Bedürfnisse angepasst werden.
 
 Nachdem die Einträge gemacht sind, kann die Datei gespeichert und geschlossen
 werden. Um die Änderungen zu übernehmen muss das Netzwerk neu gestartet
 werden:
 
 .. warning:: Falls man per SSH auf dem Server arbeitet, bricht die Verbindung
-    ab, wenn man das Netzwerk neu startet.  
+    ab, wenn man das Netzwerk neu startet.
 
 ::
 
