@@ -40,7 +40,6 @@ Bootreihenfolge umzustellen (siehe Kasten `Bootreihenfolge ändern
     Installation kann diese Einstellung wieder Rückgängig gemacht werden,
     bzw. das sollte sie sogar, dazu mehr im Kapitel Sicherheit.
 
-.. todo:: Kapitel Sicherheit schreiben
 
 Installation
 ------------
@@ -48,7 +47,7 @@ Installation
 .. figure:: images/installation/01-sprachauswahl.png
     :align: center
     :alt: Sprachauswahl
-    
+
     Sprachauswahl
 
     Nach dem Anschalten sollte sich der Bootscreen der CD zeigen und zur 
