@@ -66,6 +66,8 @@ der Transfer geklappt, falls man dennoch nach dem Passwort gefragt wird, sollte
 man den Inhalt der Datei **id_dsa.pub** manuell in die oben genannte Datei
 eintragen (Falls die Datei nicht existiert, bitte anlegen).
 
+.. todo:: Vorgehen für Putty
+
 Fileserver
 ----------
 
@@ -87,11 +89,16 @@ __________________________
 
 Bevor sich ein Benutzer am Samba-Server anmelden kann muss er
 zuerst mit diesem bekannt gemacht werden. Dazu dient das folgende
-Kommando: {lightgray}{sudo smbpasswd -a benutzer}Anschließend wird
-zur Passwortvergabe aufgefordert. Falls das Passwort des Benutzers
-im System irgendwann einmal geändert werden sollte wird später in
-der Konfiguration des Servers vermerkt, dass die Passwörter
-zwischen System und Samba ab geglichen werden. Der obige Schritt
+Kommando:
+
+::
+
+  sudo smbpasswd -a benutzer
+
+Anschließend wird zur Passwortvergabe aufgefordert. Falls das
+Passwort des Benutzers im System irgendwann einmal geändert werden
+sollte wird später in der Konfiguration des Servers vermerkt, dass die
+Passwörter zwischen System und Samba ab geglichen werden. Der obige Schritt
 muss also nur einmal erfolgen.
 
 Konfiguration
@@ -101,23 +108,30 @@ Die Konfiguration von Samba geschieht vollständig in der Datei
 **/etc/samba/smb.conf**.Es besteht bereits eine Beispiel-Datei, die
 wir aber hier nicht verwenden werden, sondern erst einmal aus dem
 Weg schaffen:
-{lightgray}{sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak}
-Anschließend erstellt man die Datei mit einem Editor neu:
-{lightgray}{sudo nano /etc/samba/smb.conf}
+
+::
+
+  sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
+Anschließend erstellt man die Datei mit dem Editor neu:
+
+::
+
+  sudo nano /etc/samba/smb.conf
+
 Die Datei ist der Übersichtlichkeit halber in Sektionen unterteilt,
 in der Regel gilt das eine Sektion einer Freigabe entspricht und
 der Name der Sektion der Name der späteren Freigabe ist. Wenn also
-die Sektion [freigabe] heißt (die eckigen Klammern umschließen den
+die Sektion ``[freigabe]`` heißt (die eckigen Klammern umschließen den
 Sektionsnamen), dann würde die Freigabe entsprechend 'freigabe'
 heißen. Es gibt allerdings einige bereits festgelegte
 Sektionsnamen, die man nicht für seine eigenen Freigaben verwenden
-sollte. Dazu gehört unter anderen auch die Sektion [global], die
+sollte. Dazu gehört unter anderen auch die Sektion ``[global]``, die
 für die Allgemeinen Einstellungen des Server reserviert ist und mit
 der die Konfigurationsdatei 'smb.conf' in der Regel beginnt:
 
 ::
 
-    [fontsize=\scriptsize]
     [global]
     workgroup = ARBEITSGRUPPE
     server string = Samba Server auf %h
@@ -137,10 +151,10 @@ abgeändert werden:
 
 ::
 
-    [fontsize=\scriptsize]
-    wins server = IPdesWINDOWSservers
+    wins server = 192.168.0.250
 
-Wozu dient WINS? Ganz einfach dazu die IP-Adressen der im Netzwerk
+Wobei ``192.168.0.250`` die IP des Windows-Servers ist.
+Wozu dient WINS? Ganz einfach dazu, die IP-Adressen der im Netzwerk
 vorhandenen Rechner deren NETBIOS-Namen, also den Hostnamen
 zuzuweisen und anderen Rechnern ein Verzeichnis zu bieten, in der
 diese die Zuordnung (IP<>Hostname) nachschauen können.
@@ -153,24 +167,25 @@ Sektion an mit dem Namen 'public'. Zuerst erstellen wir allerdings
 das Verzeichnis und setzen die Benutzerrechte so, das die Benutzer
 der Gruppe 'users', darauf zugreifen können:
 
-{lightgray}{sudo mkdir /srv/public}
-{lightgray}{sudo chmod o-rwx /srv/public}
-{lightgray}{sudo chgrp users /srv/public}
-{lightgray}{sudo chmod g+sw /srv/public}
+::
 
-Zeile 1 legt das Verzeichnis (das Überverzeichnis '/srv' ist für
+  sudo mkdir /srv/public
+  sudo chmod o-rwx /srv/public
+  sudo chgrp users /srv/public
+  sudo chmod g+sw /srv/public
+
+Zeile 1 legt das Verzeichnis (das Überverzeichnis **/srv** ist für
 solche Serverdienste reserviert, also nutzen wir das hier auch mal)
 an, Zeile zwei beschränkt die Lese- und Schreibrechte auf Besitzer
 und Gruppe des Verzeichnisses, Zeile 3 ändert die Gruppe des
-Verzeichnisses auf 'users' und Zeile 4 sorgt dafür das neu
-angelegte Verzeichnisse immer der Gruppe 'users' gehören. (mehr zum
+Verzeichnisses auf **users** und Zeile 4 sorgt dafür das neu
+angelegte Verzeichnisse immer der Gruppe **users** gehören. (mehr zum
 Thema Rechte unter http://wiki.ubuntuusers.de/Rechte)
 
-Dann wird die Freigabe in die **smb.conf** eingetragen:
+Dann wird die Freigabe in die ``smb.conf`` eingetragen:
 
 ::
 
-    [fontsize=\scriptsize]
     [public]
     comment = Freigabe fuer jedermann
     path = /srv/public
@@ -181,21 +196,21 @@ Dann wird die Freigabe in die **smb.conf** eingetragen:
 
 In der Zeile comment gibt man am besten eine Beschreibung des
 Verzeichnisses an (kann auch weggelassen werden), in der Zeile path
-gibt man den Pfad zum eben angelegten Verzeichnis an. 'writeable'
+gibt man den Pfad zum eben angelegten Verzeichnis an. *writeable*
 sorgt dafür das das Schreiben in das Verzeichnis möglich ist. Die
-letzten drei Zeilen sind für die Zugriffsrechte zuständig: 'valid
-users' zeigt hier an das die Gruppe 'users', deutlich gemacht durch
+letzten drei Zeilen sind für die Zugriffsrechte zuständig: *valid
+users* zeigt hier an das die Gruppe *users*, deutlich gemacht durch
 das @, Zugriff hat. Einzelne Benutzer werden ohne @ durch Komma
 getrennt eingetragen. Die anderen beiden Zeilen sorgen dafür, das
 neu angelegte Dateien und Verzeichnisse von den Benutzern der
-Gruppe 'users' Les- und Schreibbar sind.
+Gruppe *users* Les- und Schreibbar sind.
 
-Damit können wir unseren Server auch schon testen, 'smb.conf'
-abspeichern und mit 'testparm -v' prüfen ob die gemachten
+Damit können wir unseren Server auch schon testen, ``smb.conf``
+abspeichern und mit ``testparm -v`` prüfen ob die gemachten
 Konfigurationen Fehler enthalten. Das Konsolenprogramm gibt die
 komplette Konfiguration aus und zeigt eventuelle Fehler an. Wenn
-die Einstellungen fehlerfrei sind, wird der Server mit 'sudo
-/etc/init.d/samba restart', neu gestartet. Danach sollte man testen
+die Einstellungen fehlerfrei sind, wird der Server mit ``sudo
+service samba restart``, neu gestartet. Danach sollte man testen
 ob die Freigabe aus dem Netzwerk erreichbar ist. Dazu einfach mit
 einem geeigneten Client (Linux, Windows, Mac) versuchen auf die
 Freigabe zuzugreifen. Dabei sollte der eingerichtete Benutzer und
@@ -217,45 +232,61 @@ wir einen Webserver wie zum Beispiel den Apache (Einrichtung siehe
 Abschnitt lamp auf Seite {lamp}). Ist dieser installiert muss nur
 das Modul für WebDAV geladen werden und anschließend Apache neu
 gestartet werden:
-{lightgray}{sudo a2enmod dav}
-{lightgray}{sudo a2enmod dav\\\_fs}
-
-Um die Einrichtung der Benutzer zu vereinfachen wird hier das Modul
-*auth\_pam* verwendet. Damit können alle Benutzer, die über
-*adduser* (siehe Abschnitt user\_management auf Seite
-{user\_management}) eingerichtet werden Zugriff per WebDAV
-bekommen. {lightgray}{sudo apt-get install libapache2-mod-auth-pam}
-{lightgray}{sudo a2enmod auth\\\_pam}
-Um auf unser *public*-Verzeichnis zugreifen zu muss zunächst der
-Benutzer der den Apache-Server lädt in die Gruppe *users*
-aufgenommen werden:
-{lightgray}{sudo adduser www-data users}
-Zusätzlich muss der Benutzer Mitglied der Gruppe *shadow* sein um
-auf die System-Benutzer-Datenbank zugreifen zu können:
-{lightgray}{sudo adduser www-data shadow}
-
-Um schlussendlich Zugang zu den Daten zu erhalten muss die Datei
-*/etc/apache2/sites-available/default* bearbeitet werden. Am Ende
-der Datei, aber vor der Zeile </Virtualhost> wird folgender
-Abschnitt eingefügt:
 
 ::
 
-    [fontsize=\scriptsize]
+  sudo a2enmod dav
+  sudo a2enmod dav_fs
+
+Um die Einrichtung der Benutzer zu vereinfachen wird hier das Modul
+*auth_pam* verwendet. Damit können alle Benutzer, die über
+*adduser* (siehe Abschnitt :ref:`Benutzer und Gruppen <usergroups>`)
+eingerichtet werden Zugriff per WebDAV
+bekommen. 
+
+::
+
+  sudo apt-get install libapache2-mod-auth-pam
+  sudo a2enmod auth_pam
+
+Um auf unser *public*-Verzeichnis zugreifen zu muss zunächst der
+Benutzer der den Apache-Server lädt in die Gruppe *users*
+aufgenommen werden:
+
+::
+
+  sudo adduser www-data users
+
+Zusätzlich muss der Benutzer Mitglied der Gruppe *shadow* sein um
+auf die System-Benutzer-Datenbank zugreifen zu können:
+
+::
+
+  sudo adduser www-data shadow
+
+Um schlussendlich Zugang zu den Daten zu erhalten muss die Datei
+``/etc/apache2/sites-available/default`` bearbeitet werden. Am Ende
+der Datei, aber vor der Zeile ``</Virtualhost>`` wird folgender
+Abschnitt eingefügt:
+
+.. todo:: eigene Datei für DAV-host
+
+::
+
     Alias /public "/srv/public/"
     <Directory "/srv/public/">
-    DAV on
-    Options +Indexes
-    AuthType Basic
-    AuthName "WebDAV Verzeichnis"
-    AuthPAM_Enabled On
-    AuthPAM_FallThrough Off
-    AuthBasicAuthoritative Off
-    AuthUserFile /dev/null
-    Require valid-user
+      DAV on
+      Options +Indexes
+      AuthType Basic
+      AuthName "WebDAV Verzeichnis"
+      AuthPAM_Enabled On
+      AuthPAM_FallThrough Off
+      AuthBasicAuthoritative Off
+      AuthUserFile /dev/null
+      Require valid-user
     </Directory>
 
-Nach einem Neustart des Apachen (sudo /etc/init.d/apache2 restart)
+Nach einem Neustart des Apachen (``sudo service apache2 restart``)
 sollte die Freigabe unter der Adresse http://serveradresse/public
 zu erreichen sein.
 
@@ -263,28 +294,29 @@ Diese Vorgehensweise wird allerdings nicht empfohlen, da dann
 Passwörter unverschlüsselt übertragen und mitgelesen werden können.
 Deshalb empfiehlt es sich folgenden Abschnitt in die im
 Apache-SSL-Tutorial erstellte Datei
-*/etc/apache2/sites-available/ssl* einzufügen:
+``/etc/apache2/sites-available/ssl`` einzufügen:
+
+.. todo:: eigene Datei für DAV-host
 
 ::
 
-    [fontsize=\scriptsize]
     SSLEngine On
     SSLCertificateFile /etc/apache2/ssl/apache.pem
     Alias /public "/srv/public/"
     <Directory "/srv/public/">
-    DAV on
-    Options +Indexes
-    AuthType Basic
-    AuthName "WebDAV Verzeichnis"
-    AuthPAM_Enabled On
-    AuthPAM_FallThrough Off
-    AuthBasicAuthoritative Off
-    AuthUserFile /dev/null
-    Require valid-user
-    SSLRequireSSL
+      DAV on
+      Options +Indexes
+      AuthType Basic
+      AuthName "WebDAV Verzeichnis"
+      AuthPAM_Enabled On
+      AuthPAM_FallThrough Off
+      AuthBasicAuthoritative Off
+      AuthUserFile /dev/null
+      Require valid-user
+      SSLRequireSSL
     </Directory>
 
-Nach einem Neustart des Apachen (sudo /etc/init.d/apache2 restart)
+Nach einem Neustart des Apachen (``sudo service apache2 restart``)
 sollte man unter der Adresse https://serveradresse/public die
 DAV-Freigabe erreichen können.
 
@@ -293,7 +325,7 @@ LAMP - Linux Apache MySQL PHP
 
 Ein sehr gefragtes und sehr flexibles Feature für einen Linux-Server, egal ob
 zu Hause, im Büro oder im Rechenzentrum, ist ein Webserver. Beliebter und
-wahrscheinlich bekanntester Vertreter ist der `Apache HTTP-Server 
+wahrscheinlich bekanntester Vertreter ist der `Apache HTTP-Server
 <http://httpd.apache.org/>`_, um den es auch im folgenden gehen soll.
 
 Apache
@@ -302,9 +334,9 @@ Apache
 ::
 
     $ sudo apt-get install apache2
-    
+
 Damit wird das Apache Grundgerüst und einige Abhängige Pakete eingespielt.
-Nachdem der Installationsprozess durchgelaufen ist, sollte im Browser über die 
+Nachdem der Installationsprozess durchgelaufen ist, sollte im Browser über die
 Adresse http://192.168.0.254/ die Testseite des Apachen begutachtet werden
 können.
 
@@ -340,13 +372,13 @@ bereitstellen, welches in den folgenden Schritten erstellt wird::
     sudo openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/ssl/apache.pem
 
 Der Wert für **-days** kann dabei beliebig angepasst werden, je
-nachdem wie lange das Zertifikat gültig bleiben soll (z.B. -days
-1825 für 5 Jahre).
+nachdem wie lange das Zertifikat gültig bleiben soll (z.B. ``-days
+1825`` für 5 Jahre).
+
 Dann werden ein paar Daten abgefragt:
 
 ::
 
-    [fontsize=\scriptsize]
     Country Name (2 letter code) [AU]:DE
     State or Province Name (full name) [Some-State]:
     Locality Name (eg, city) []:Home
@@ -357,27 +389,35 @@ Dann werden ein paar Daten abgefragt:
 
 Wie man diese Fragen beantwortet ist einem selbst überlassen, je
 nachdem wie ernst man es mit seinem Server nimmt.
-{lightgray}{\\parbox{0.7\\textwidth}{sudo ln -sf /etc/apache2/ssl/apache.pem /etc/apache2/ssl/\`/usr/bin/openssl x509 -noout -hash < /etc/apache2/ssl/apache.pem\`.0}}
-{lightgray}{sudo chmod 600 /etc/apache2/ssl/apache.pem}
-Anschließend aktiviert man das SSL-Modul:
-{lightgray}{sudo a2enmod ssl}
+
+::
+
+  sudo ln -sf /etc/apache2/ssl/apache.pem /etc/apache2/ssl/\`/usr/bin/openssl x509 -noout -hash < /etc/apache2/ssl/apache.pem\`.0
+  sudo chmod 600 /etc/apache2/ssl/apache.pem
+
+Anschließend aktiviert man das SSL-Modul:::
+
+  sudo a2enmod ssl
+
 Jetzt muss noch die Apache-Konfiguration angepasst werden. Dazu
-kopieren wir die aktuelle Konfiguration ohne SSL:
-{lightgray}{sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/ssl}
+kopieren wir die aktuelle Konfiguration ohne SSL:::
+
+  sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/ssl
+
 Was den Vorteil hat, dass jetzt auch die normalen Seiten per SSL
 erreichbar sind. In der neuen Datei
-(/etc/apache2/sites-available/ssl) müssen folgende Einstellungen
+(``/etc/apache2/sites-available/ssl``) müssen folgende Einstellungen
 geändert werden. In den ersten beiden Zeilen der ssl-Datei sollte
 es heißen:
 
 ::
 
-    [fontsize=\scriptsize]
     NameVirtualHost *:443
     <VirtualHost *:443>
 
-Als letzter Schritt wird der Apache-Server jetzt neu gestartet:
-{lightgray}{sudo /etc/init.d/apache2 force-reload}
+Als letzter Schritt wird der Apache-Server jetzt neu gestartet:::
+
+  sudo service apache2 force-reload
 
 Nun sollte der Server auch unter der Adresse https://serveradresse
 ereichbar sein. Da das Zertifikat nicht signiert ist, wird man mit
@@ -389,44 +429,57 @@ PHP
 ~~~
 
 Die Installation erfolgt mit:
-{lightgray}{sudo apt-get install php5 libapache2-mod-php5 php5-mysql php5-cgi php5-gd php5-mcrypt}
+
+::
+
+  sudo apt-get install php5 libapache2-mod-php5 php5-mysql php5-cgi php5-gd php5-mcrypt
+
 Anschließend muss der Apache neu gestartet werden:
-{lightgray}{sudo /etc/init.d/apache2 restart}
+
+::
+
+  sudo service apache2 restart
 
 Zum testen der PHP-Installation sollten folgende Schritte genügen:
 
 Erzeugen einer PHP-Datei im Hauptverzeichnis des Webservers:
-{lightgray}{sudo nano /srv/www/info.php}
+
+::
+
+  sudo nano /srv/www/info.php
+
+
 In der Datei sollte folgendes stehen:
 
 ::
 
-    [fontsize=\scriptsize]
-    <?php
-    phpinfo();
-    ?>
+    <?php phpinfo(); ?>
 
 Speichern und im Browser die Adresse
-http://[serveradresse]/info.php aufrufen worauf die folgende Seite
+http://192.168.0.254/info.php aufrufen worauf die folgende Seite
 (Abb. fig:phpinfo) zu sehen sein sollte (die Versionsnummer von PHP
-unter Hardy ist zur Zeit 5.2.4):
+unter Ubuntu 10.04 ist zur Zeit 5.3.2):
 
-    |image|
-    {Ausgabe von phpinfo() zum Test der PHP-Installation}(fig:phpinfo)
+.. figure:: images/phpinfo.png
+    :align: center
+    :alt: Ausgabe von phpinfo() zum Test der PHP-Installation
 
+    Ausgabe von phpinfo() zum Test der PHP-Installation
 
 Falls der Browser anbietet das PHP-File herunterzuladen, wurde
 wahrscheinlich das PHP-Modul noch nicht in Apache eingebunden, ein
-{lightgray}{sudo a2enmod php5}mit anschließendem
-{lightgray}{sudo /etc/init.d/apache2 restart}sollte da Abhilfe
-schaffen.
+``sudo a2enmod php5`` mit anschließendem
+``sudo service apache2 restart`` sollte da Abhilfe schaffen.
 Damit wäre PHP erfolgreich eingerichtet und wir können zum nächsten
 Patienten übergehen.
 
 MySQL
 ~~~~~
 
-{lightgray}{sudo apt-get install mysql-server phpmyadmin}
+::
+
+  sudo apt-get install mysql-server phpmyadmin
+
 Damit werden der MySQL-Server 5 und, zur Administration dieses,
 phpMyAdmin, samt aller Abhängigkeiten, installiert. Während der
 Installation wird das Passwort für den Benutzer *root* abgefragt.
@@ -434,17 +487,24 @@ Auch hier ist bitte wieder ein ausreichend sicheres Passwort zu
 wählen. Im nächsten Schritt wählt man **apache2** als Option aus
 und bestätigt mit *OK*.
 
-    |image1|
-    {Überprüfen der MySQL-Installation mit Hilfe von phpMyAdmin}(fig:phpmyadmin)
+.. figure:: images/phpmyadmin.png
+    :align: center
+    :alt: Überprüfen der MySQL-Installation mit Hilfe von phpMyAdmin
+
+    Überprüfen der MySQL-Installation mit Hilfe von phpMyAdmin
 
 
 Nachdem die Installation abgeschlossen ist kann die
 MySQL-Installation getestet werden. Dazu muss noch die
 phpMyAdmin-Installation in unser Webserver-Home-Verzeichnis
-(/srv/www) verlinkt werden:
-{lightgray}{sudo ln -s /usr/share/phpmyadmin /srv/www/phpmyadmin}
+(``/srv/www``) verlinkt werden:
+
+::
+
+  sudo ln -s /usr/share/phpmyadmin /srv/www/phpmyadmin
+
 Danach kann im Browser die Adresse
-http://[serveradresse]/phpmyadmin aufgerufen werden und ein
+http://192.168.0.254/phpmyadmin aufgerufen werden und ein
 Login-Versuch mit dem Benutzer *root* und dem entsprechenden
 Passwort gemacht werden. Sollte beides gelingen, ist die
 Installation bereits abgeschlossen. (Abb. fig:phpmyadmin)
@@ -457,20 +517,22 @@ um eine Attraktion reicher.
 DNS- und DHCP-Server
 --------------------
 
-{lightgray}{sudo apt-get install dnsmasq}
+::
+
+  sudo apt-get install dnsmasq
+
 Die Konfiguration des Servers muss dann in der Datei
-*/etc/dnsmasq.conf* geändert werden. Um den DHCP-Server zu
-aktivieren muss zuerst das *#* vor der Zeile *dhcp-range=...*
+``/etc/dnsmasq.conf`` geändert werden. Um den DHCP-Server zu
+aktivieren muss zuerst das ``#`` vor der Zeile ``dhcp-range=...``
 entfernt werden und die Zeile entsprechend des jeweiligen
 Netzwerkes angepasst werden.
 
 ::
 
-    [fontsize=\scriptsize] 
-    dhcp-range=192.168.101.100,192.168.101.200,12h 
+    dhcp-range=192.168.101.100,192.168.101.200,12h
 
 In diesem Beispiel werden Adressen im Bereich zwischen
-*192.168.101.100* und *192.168.101.200* vergeben und diese sind für
+``192.168.101.100`` und ``192.168.101.200`` vergeben und diese sind für
 12 Stunden gültig (12h), danach müssen die Clients erneut nach
 einer Adresse fragen.
 In der Regel werden jetzt die Adressen zufällig verteilt, das heißt
@@ -484,14 +546,13 @@ angelegt werden:
 
 ::
 
-    [fontsize=\scriptsize] 
-    dhcp-host=11:22:33:44:55:66,rechner1,192.168.101.170 
+    dhcp-host=11:22:33:44:55:66,rechner1,192.168.101.70
 
 Damit wird dem Rechner (der Netzwerkkarte) mit der MAC-Adresse
-*11:22:33:44:55:66* der Name *rechner1* und die IP
-*192.168.101.170* zugewiesen. In der Regel ist das für ein Heim-
+``11:22:33:44:55:66`` der Name *rechner1* und die IP
+``192.168.101.70`` zugewiesen. In der Regel ist das für ein Heim-
 oder kleines Office-Netzwerk genug, für weitere Feineinstellungen
-sind in der Datei */etc/dnsmasq.conf* einige Beispiele mit
+sind in der Datei ``/etc/dnsmasq.conf`` einige Beispiele mit
 Erklärungen aufgelistet.
 Falls im Netzwerk ein Router seinen Dienst tut, um den Clients den
 Internet-Zugang zu ermöglichen, sollte man den Clients dies
@@ -500,19 +561,18 @@ geändert/hinzugefügt werden:
 
 ::
 
-    [fontsize=\scriptsize] 
-    dhcp-option=3,192.168.101.1 
+    dhcp-option=3,192.168.0.1
 
-Dabei ist *192.168.101.1* die Adresse des Routers
-Nachdem *dnsmasq* neu gestartet wurde ist der Server dazu fähig den
+Dabei ist ``192.168.101.1`` die Adresse des Routers
+Nachdem **dnsmasq** mit einem ``service dnsmasq restart`` neu gestartet
+wurde ist der Server dazu fähig den
 Rechnern im Netzwerk Adressen zu geben und diese Zuordnung auch
 anderen Rechnern im selben Netz mitzuteilen.
 Falls es im Netzwerk Rechner gibt, die ihre IP nicht vom
 DHCP-Server beziehen, sondern diese manuell zugewiesen bekommen (so
-wie dieser Server), sollten diese in die Datei **/etc/hosts**
+wie dieser Server), sollten diese in die Datei ``etc/hosts``
 eingetragen werden, da diese ebenfalls von dnsmasq eingelesen wird.
-Wie das funktioniert erklärt Abschnitt hostsfile auf Seite
-{hostsfile}.
+Wie das funktioniert erklärt Abschnitt :ref:`"Die Datei /etc/hosts" <hostsfile>`.
 Eine nette Sache noch zum Abschluss. dnsmasq kann auch als
 Spamfilter missbraucht werden, indem man zum Beispiel die Adresse
 *googleadservices.com* auf eine andere IP umleitet. Dazu genügt ein
@@ -520,21 +580,14 @@ Eintrag in der dnsmasq-Konfiguration:
 
 ::
 
-    [fontsize=\scriptsize] 
-    address=/googleadservices.com/127.0.0.1 
+    address=/googleadservices.com/127.0.0.1
 
 Weitere Möglichkeiten ergeben sich dadurch natürlich auch:
 
 ::
 
-    [fontsize=\scriptsize] 
-    address=/microsoft.de/91.189.94.249 
+    address=/microsoft.de/91.189.94.249
 
-Leiter zum Beispiel alle Anfragen an http://www.microsoft.de auf
+Leitet zum Beispiel alle Anfragen an http://www.microsoft.de auf
 http://www.ubuntu.com um, praktisch nicht wahr? Nach jeder dieser
 Änderungen ist ein Neustart des dnsmasq-Daemons notwendig!
-
-
-
-.. |image| image:: images/phpinfo.png
-.. |image1| image:: images/phpmyadmin.png
