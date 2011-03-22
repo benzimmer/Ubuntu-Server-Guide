@@ -181,7 +181,7 @@ a.headerlink:hover {
 }
  
 div.body p, div.body dd, div.body li {
-    line-height: 1.4em;
+    line-height: 1.5em;
 }
 
 div.admonition {
@@ -190,6 +190,7 @@ div.admonition {
     padding: 10px 30px;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    width:90%;
 }
 
 div.admonition p.admonition-title {
