@@ -10,6 +10,33 @@ einmal mit den Grundbefehlen auseinandersetzen. Im `ubuntuusers.de - Wiki
 findet sich eine kleine Übersicht, die man gut zum gelegentlichen Nachschauen
 nutzen kann.
 
+.. _editor:
+
+Wahl eines Editors
+------------------
+
+Es bietet sich an entweder `nano <http://wiki.ubuntuusers.de/Nano>`_ oder
+`VIM <http://wiki.ubuntuusers.de/Vim>`_ zu verwenden. Nano ist für
+Anfänger sicher die bessere Wahl, Vim dafür wesentlich mächtiger aber
+dafür auch mit einer steilen Lernkurve versehen. (Ein kleiner Tipp: Um Vim zu beenden drückt man um sicher zu gehen das man im richtigen Modus ist die **Esc**-Taste und anschließend ``:wq<Enter>``).
+
+Um eine Konfigurationsdatei zu öffnen reicht es den Namen des Editors
+gefolgt von der zu editierenden Datei einzutippen und mit Enter zu
+bestätigen.
+Also entweder
+
+::
+
+    vim /etc/network/interfaces
+
+für Vim oder
+
+::
+
+    nano /etc/network/interfaces
+
+für Nano.
+
 Netzwerk einrichten
 -------------------
 
@@ -42,34 +69,13 @@ die vorhandenen Netzwerkschnittstellen und die ihnen zugewiesenen Adressen.
 Schnittstelle die Adresse **192.168.0.254**. Wie man die Adresse seinen eigenen
 Bedürfnissen anpasst zeigt der folgende Abschnitt.
 
+**lo** ist eine sogenannte `Loopback-Schnittstelle <http://de.wikipedia.org/wiki/Loopback>`_. Sie kann zum Beispiel verwendet werden um bestimmte Serverdienste nur für den Rechner auf dem sie laufen zur Verfügung zu stellen.
+
 Netzwerkadresse festlegen
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Zunächst brauchen wir einen Editor für die Kommandozeile. Welchen
-man dafür nimmt und wie man ihn benutzt, klärt der Kasten
-**Wahl eines Editors**.
-
-.. note:: **Wahl eines Editors**
-
-    Es bietet sich an entweder `nano <http://wiki.ubuntuusers.de/Nano>`_ oder
-    `VIM <http://wiki.ubuntuusers.de/Vim>`_ zu verwenden. Nano ist für
-    Anfänger sicher die bessere Wahl, Vim dafür wesentlich mächtiger aber
-    dafür auch mit einer steilen Lernkurve versehen. 
-    
-    Um eine Konfigurationsdatei zu öffnen reicht es den Namen des Editors
-    gefolgt von der zu editierenden Datei einzutippen und mit Enter zu
-    bestätigen.
-    Also entweder
-
-    ``vim /etc/network/interfaces`` 
-    
-    für Vim oder
-    
-    ``nano /etc/network/interfaces``
-    
-    für Nano.
-
-Um jetzt die Netzwerkkonfiguration zu ändern muss, mit einem dieser Editoren,
+Um die Netzwerkkonfiguration zu ändern muss, mit einem Editor
+(siehe :ref:`Wahl eines Editors <editor>`),
 die Datei (**/etc/network/interfaces**) bearbeitet werden. Im Ausgangszustand,
 sieht diese so aus:
 
