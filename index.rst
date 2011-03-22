@@ -3,7 +3,20 @@
 Ubuntu Server 10.04 LTS Guide
 =============================
 
-.. todolist::
+Still in beta
+-------------
+
+.. warning::
+
+    Dieser Guide befindet sich zur Zeit noch im Aufbau. Daher kein Anspruch auf
+    Vollständig- oder Richtigkeit.
+
+    **Die Nutzung erfolgt auf eigene Gefahr.**
+
+    Für das Berichten von Fehlern wendet euch bitte an mich:
+
+    * per mail:   zero@zeroathome.de
+    * per jabber: ben@einfachjabber.de
 
 Inhalt:
 
@@ -15,6 +28,7 @@ Inhalt:
     grundeinrichtung
     dienste
 
+.. todolist::
 
 .. Indices und Tabellen
 .. ====================
