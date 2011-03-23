@@ -190,7 +190,6 @@ div.admonition {
     padding: 10px 30px;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    width:90%;
 }
 
 div.admonition p.admonition-title {
@@ -216,12 +215,14 @@ dt:target, .highlight {
 
 div.note {
     background-color: #eee;
-    border: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
 }
  
 div.seealso {
     background-color: #ffc;
-    border: 1px solid #ff6;
+    border-bottom: 1px solid #ff6;
+    border-top: 1px solid #ff6;
 }
  
 div.topic {
@@ -230,7 +231,14 @@ div.topic {
  
 div.warning {
     background-color: #ffe4e4;
-    border: 1px solid #f66;
+    border-bottom: 1px solid #f66;
+    border-top: 1px solid #f66;
+}
+
+div.caution {
+    background-color: #ffe4e4;
+    border-bottom: 1px solid #f66;
+    border-top: 1px solid #f66;
 }
  
 p.admonition-title {
@@ -350,8 +358,9 @@ td.code {
 }
 
 .figure {
-    background: #ccc;
-    border-radius: 5px;
+    background: #f2f2f2;
+    border-bottom:1px solid #999;
+    border-top:1px solid #999;
     margin: 1em 0;
     padding: 10px;
 }
@@ -360,6 +369,6 @@ td.code {
 }
 
 .caption {
-    color: #444;
+    color: #222;
     margin: 0;
 }
