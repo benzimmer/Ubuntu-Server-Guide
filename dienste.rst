@@ -586,11 +586,14 @@ Installation bereits abgeschlossen.
 Damit ist der LAMP-Server eingerichtet und unser Heim-Server wieder
 um eine Attraktion reicher.
 
-
 .. _dns-dhcp:
 
 DNS- und DHCP-Server
 --------------------
+
+.. caution::
+
+  Dieser Abschnitt wurde noch nicht unter Ubuntu 10.04 getestet
 
 ::
 
