@@ -42,6 +42,20 @@ für Nano.
 Netzwerk einrichten
 -------------------
 
+.. admonition:: Netzwerk-Adresse herausfinden
+
+  In den Tutorials werden häufig Netzwerkadressen benötigt. Welchen IP-Bereich
+  man dafür wählt ist zunächst egal, so lange man alle beteiligten Rechner
+  (Server und Clients) im gleichen Bereich konfiguriert. Die Tutorials werden
+  beispielhaft den Bereich ``192.168.0.0/24`` benutzen, in dem der Server die
+  IP ``192.168.0.254`` tragen wird um eventuelle Kollisionen mit einem bereits
+  vorhandenen Router vorzubeugen.
+
+  Wie sie ihren Adressbereich herausfinden zeigt der Abschnitt
+  :ref:`Netzwerk-Adresse herausfinden<findaddress>` im Anhang. Wichtig ist, dass
+  sie dem Server nicht die gleiche Adresse geben wie ihrem Rechner. Die Ziffer
+  hinter dem letzten Punkt sollte sich unterscheiden und nicht höher sein als 254.
+
 Nach dem Einloggen ins System, sollte zuerst überprüft werden ob das Netzwerk
 richtig eingerichtet ist. Der Befehl *ifconfig* bringt eine Übersicht über
 die vorhandenen Netzwerkschnittstellen und die ihnen zugewiesenen Adressen.

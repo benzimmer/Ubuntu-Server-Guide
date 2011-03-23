@@ -18,7 +18,7 @@ Still in beta
     * per mail:   zero@zeroathome.de
     * per jabber: ben@einfachjabber.de
 
-    :ref:`Bereits bekannte Fehler/Unstimmigkeiten <knownissues>`
+    :ref:`Zur Zeit bekannte Fehler/Unstimmigkeiten <knownissues>`
 
 Inhalt:
 
@@ -29,6 +29,7 @@ Inhalt:
     installation
     grundeinrichtung
     dienste
+    anhang
     knownissues
 
 
