@@ -553,6 +553,8 @@ wahrscheinlich das PHP-Modul noch nicht in Apache eingebunden, ein
 Damit wäre PHP erfolgreich eingerichtet und wir können zum nächsten
 Patienten übergehen.
 
+.. _mysql:
+
 MySQL
 ~~~~~
 
@@ -560,12 +562,13 @@ MySQL
 
   sudo apt-get install mysql-server phpmyadmin
 
-Damit werden der MySQL-Server 5 und, zur Administration dieses,
-phpMyAdmin, samt aller Abhängigkeiten, installiert. Während der
-Installation wird das Passwort für den Benutzer *root* abgefragt.
-Auch hier ist bitte wieder ein ausreichend sicheres Passwort zu
-wählen. Im nächsten Schritt wählt man **apache2** als Option aus
-und bestätigt mit *OK*.
+Damit werden der `MySQL-Server 5 <http://mysql.com/>`_ und zur einfachen Administration dessen,
+`phpMyAdmin <http://www.phpmyadmin.net/>`_, samt aller Abhängigkeiten, installiert. Während der
+Installation wird man aufgefordert ein Passwort für den MySQL-Benutzer *root* festzulegen.
+Auch hier ist bitte wieder ein ausreichend sicheres Passwort zu wählen. Im nächsten Schritt
+wählt man ``apache2`` als Option aus und bestätigt mit **OK**. phpMyAdmin braucht selbst eine
+Datenbank auf dem Server die im nächsten Schritt mit **Ja** automatisch angelegt wird. Auch für
+phpMyAdmin muss ein Administrationspasswort festgelegt werden.
 
 .. figure:: images/phpmyadmin.png
     :align: center
@@ -573,24 +576,16 @@ und bestätigt mit *OK*.
 
     Überprüfen der MySQL-Installation mit Hilfe von phpMyAdmin
 
-
 Nachdem die Installation abgeschlossen ist kann die
-MySQL-Installation getestet werden. Dazu muss noch die
-phpMyAdmin-Installation in unser Webserver-Home-Verzeichnis
-(``/srv/www``) verlinkt werden:
-
-::
-
-  sudo ln -s /usr/share/phpmyadmin /srv/www/phpmyadmin
-
-Danach kann im Browser die Adresse
+MySQL-Installation getestet werden.Dazu kann im Browser die Adresse
 http://192.168.0.254/phpmyadmin aufgerufen werden und ein
-Login-Versuch mit dem Benutzer *root* und dem entsprechenden
+Login-Versuch mit dem Benutzer *root* und dem eben angegebenen
 Passwort gemacht werden. Sollte beides gelingen, ist die
-Installation bereits abgeschlossen. (Abb. fig:phpmyadmin)
+Installation bereits abgeschlossen.
 
 Damit ist der LAMP-Server eingerichtet und unser Heim-Server wieder
 um eine Attraktion reicher.
+
 
 .. _dns-dhcp:
 
