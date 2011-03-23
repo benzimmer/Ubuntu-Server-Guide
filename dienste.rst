@@ -247,112 +247,115 @@ einem geeigneten Client (Linux, Windows, Mac) versuchen auf die
 Freigabe zuzugreifen. Dabei sollte der eingerichtete Benutzer und
 dessen Passwort abgefragt werden.
 
-WebDAV
-~~~~~~
+..
+  WebDAV
+  ~~~~~~
 
-WebDAV ist ein sehr nützlicher Standard zur
-Bereitstellung von Daten in Netzwerken, da er die Standard
-HTTP-Ports verwendet und so meist auch funktioniert wenn der Client
-hinter einer Firewall sitzt. Zudem müssen bei bereits aktivem
-Webserver keine weiteren Ports freigegeben werden (für FTP oder
-SSH) um die Dateien auf dem Server zu bearbeiten. Mehr
-Informationen zu WebDAV unter http://de.wikipedia.org/wiki/Webdav.
+  WebDAV ist ein sehr nützlicher Standard zur
+  Bereitstellung von Daten in Netzwerken, da er die Standard
+  HTTP-Ports verwendet und so meist auch funktioniert wenn der Client
+  hinter einer Firewall sitzt. Zudem müssen bei bereits aktivem
+  Webserver keine weiteren Ports freigegeben werden (für FTP oder
+  SSH) um die Dateien auf dem Server zu bearbeiten. Mehr
+  Informationen zu WebDAV unter http://de.wikipedia.org/wiki/Webdav.
 
-Da WebDAV eine Implementierung des HTTP Protokolls ist, benötigen
-wir einen Webserver wie zum Beispiel den Apache (Einrichtung siehe
-Abschnitt lamp auf Seite {lamp}). Ist dieser installiert muss nur
-das Modul für WebDAV geladen werden und anschließend Apache neu
-gestartet werden:
+  Da WebDAV eine Implementierung des HTTP Protokolls ist, benötigen
+  wir einen Webserver wie zum Beispiel den Apache (Einrichtung siehe
+  Abschnitt :ref:`lamp`). Ist dieser installiert muss nur
+  das Modul für WebDAV geladen werden und anschließend Apache neu
+  gestartet werden:
 
-::
+  ::
 
-  sudo a2enmod dav
-  sudo a2enmod dav_fs
+    sudo a2enmod dav
+    sudo a2enmod dav_fs
 
-Um die Einrichtung der Benutzer zu vereinfachen wird hier das Modul
-*auth_pam* verwendet. Damit können alle Benutzer, die über
-*adduser* (siehe Abschnitt :ref:`Benutzer und Gruppen <usergroups>`)
-eingerichtet werden Zugriff per WebDAV
-bekommen. 
+  Um die Einrichtung der Benutzer zu vereinfachen wird hier das Modul
+  *auth_pam* verwendet. Damit können alle Benutzer, die über
+  *adduser* (siehe Abschnitt :ref:`Benutzer und Gruppen <usergroups>`)
+  eingerichtet werden Zugriff per WebDAV
+  bekommen. 
 
-::
+  ::
 
-  sudo apt-get install libapache2-mod-auth-pam
-  sudo a2enmod auth_pam
+    sudo apt-get install libapache2-mod-auth-pam
+    sudo a2enmod auth_pam
 
-Um auf unser *public*-Verzeichnis zugreifen zu muss zunächst der
-Benutzer der den Apache-Server lädt in die Gruppe *users*
-aufgenommen werden:
+  Um auf unser *public*-Verzeichnis zugreifen zu muss zunächst der
+  Benutzer der den Apache-Server lädt in die Gruppe *users*
+  aufgenommen werden:
 
-::
+  ::
 
-  sudo adduser www-data users
+    sudo adduser www-data users
 
-Zusätzlich muss der Benutzer Mitglied der Gruppe *shadow* sein um
-auf die System-Benutzer-Datenbank zugreifen zu können:
+  Zusätzlich muss der Benutzer Mitglied der Gruppe *shadow* sein um
+  auf die System-Benutzer-Datenbank zugreifen zu können:
 
-::
+  ::
 
-  sudo adduser www-data shadow
+    sudo adduser www-data shadow
 
-Um schlussendlich Zugang zu den Daten zu erhalten muss die Datei
-``/etc/apache2/sites-available/default`` bearbeitet werden. Am Ende
-der Datei, aber vor der Zeile ``</Virtualhost>`` wird folgender
-Abschnitt eingefügt:
+  Um schlussendlich Zugang zu den Daten zu erhalten muss die Datei
+  ``/etc/apache2/sites-available/default`` bearbeitet werden. Am Ende
+  der Datei, aber vor der Zeile ``</Virtualhost>`` wird folgender
+  Abschnitt eingefügt:
 
-.. todo:: eigene Datei für DAV-host
+  .. todo:: eigene Datei für DAV-host
 
-::
+  ::
 
-    Alias /public "/srv/public/"
-    <Directory "/srv/public/">
-      DAV on
-      Options +Indexes
-      AuthType Basic
-      AuthName "WebDAV Verzeichnis"
-      AuthPAM_Enabled On
-      AuthPAM_FallThrough Off
-      AuthBasicAuthoritative Off
-      AuthUserFile /dev/null
-      Require valid-user
-    </Directory>
+      Alias /public "/srv/public/"
+      <Directory "/srv/public/">
+        DAV on
+        Options +Indexes
+        AuthType Basic
+        AuthName "WebDAV Verzeichnis"
+        AuthPAM_Enabled On
+        AuthPAM_FallThrough Off
+        AuthBasicAuthoritative Off
+        AuthUserFile /dev/null
+        Require valid-user
+      </Directory>
 
-Nach einem Neustart des Apachen (``sudo service apache2 restart``)
-sollte die Freigabe unter der Adresse http://serveradresse/public
-zu erreichen sein.
+  Nach einem Neustart des Apachen (``sudo service apache2 restart``)
+  sollte die Freigabe unter der Adresse http://serveradresse/public
+  zu erreichen sein.
 
-Diese Vorgehensweise wird allerdings nicht empfohlen, da dann
-Passwörter unverschlüsselt übertragen und mitgelesen werden können.
-Deshalb empfiehlt es sich folgenden Abschnitt in die im
-Apache-SSL-Tutorial erstellte Datei
-``/etc/apache2/sites-available/ssl`` einzufügen:
+  Diese Vorgehensweise wird allerdings nicht empfohlen, da dann
+  Passwörter unverschlüsselt übertragen und mitgelesen werden können.
+  Deshalb empfiehlt es sich folgenden Abschnitt in die im
+  Apache-SSL-Tutorial erstellte Datei
+  ``/etc/apache2/sites-available/ssl`` einzufügen:
 
-.. todo:: eigene Datei für DAV-host
+  .. todo:: eigene Datei für DAV-host
 
-::
+  ::
 
-    SSLEngine On
-    SSLCertificateFile /etc/apache2/ssl/apache.pem
-    Alias /public "/srv/public/"
-    <Directory "/srv/public/">
-      DAV on
-      Options +Indexes
-      AuthType Basic
-      AuthName "WebDAV Verzeichnis"
-      AuthPAM_Enabled On
-      AuthPAM_FallThrough Off
-      AuthBasicAuthoritative Off
-      AuthUserFile /dev/null
-      Require valid-user
-      SSLRequireSSL
-    </Directory>
+      SSLEngine On
+      SSLCertificateFile /etc/apache2/ssl/apache.pem
+      Alias /public "/srv/public/"
+      <Directory "/srv/public/">
+        DAV on
+        Options +Indexes
+        AuthType Basic
+        AuthName "WebDAV Verzeichnis"
+        AuthPAM_Enabled On
+        AuthPAM_FallThrough Off
+        AuthBasicAuthoritative Off
+        AuthUserFile /dev/null
+        Require valid-user
+        SSLRequireSSL
+      </Directory>
 
-Nach einem Neustart des Apachen (``sudo service apache2 restart``)
-sollte man unter der Adresse https://serveradresse/public die
-DAV-Freigabe erreichen können.
+  Nach einem Neustart des Apachen (``sudo service apache2 restart``)
+  sollte man unter der Adresse https://serveradresse/public die
+  DAV-Freigabe erreichen können.
 
-LAMP - Linux Apache MySQL PHP
------------------------------
+.. _lamp:
+
+LAMP - Linux, Apache, MySQL und PHP
+-----------------------------------
 
 Ein sehr gefragtes und sehr flexibles Feature für einen Linux-Server, egal ob
 zu Hause, im Büro oder im Rechenzentrum, ist ein Webserver. Beliebter und
