@@ -18,6 +18,8 @@ Still in beta
     * per mail:   zero@zeroathome.de
     * per jabber: ben@einfachjabber.de
 
+    :ref:`Bereits bekannte Fehler/Unstimmigkeiten <knownissues>`
+
 Inhalt:
 
 .. toctree::
@@ -27,6 +29,7 @@ Inhalt:
     installation
     grundeinrichtung
     dienste
+    knownissues
 
 .. todolist::
 
