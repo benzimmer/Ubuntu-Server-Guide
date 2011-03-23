@@ -93,7 +93,7 @@ Kommando:
 
 ::
 
-  sudo smbpasswd -a benutzer
+  $ sudo smbpasswd -a benutzer
 
 Anschließend wird zur Passwortvergabe aufgefordert. Falls das
 Passwort des Benutzers im System irgendwann einmal geändert werden
@@ -105,15 +105,15 @@ Zusätzlich kennt ``smbpasswd`` noch folgende Schalter:
 
 Entfernt den Benutzer <username> aus der Samba Datenbank::
 
-  sudo smbpasswd -x <username>
+  $ sudo smbpasswd -x <username>
 
 Deaktiviert den Benutzer <username> in der Datenbank::
 
-  sudo smbpasswd -d <username>
+  $ sudo smbpasswd -d <username>
 
 Aktiviert den vorher deaktivierten Benutzer <username> in der Datenbank wieder::
 
-  sudo smbpasswd -e <username>
+  $ sudo smbpasswd -e <username>
 
 
 Konfiguration
@@ -126,13 +126,13 @@ Weg schaffen:
 
 ::
 
-  sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+  $ sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 Anschließend erstellt man die Datei mit dem Editor neu:
 
 ::
 
-  sudo nano /etc/samba/smb.conf
+  $ sudo nano /etc/samba/smb.conf
 
 Die Datei ist der Übersichtlichkeit halber in Sektionen unterteilt,
 in der Regel gilt das eine Sektion einer Freigabe entspricht und
@@ -184,13 +184,12 @@ Sektion an mit dem Namen 'public'. Zuerst erstellen wir allerdings
 das Verzeichnis und setzen die Benutzerrechte so, das die Benutzer
 der Gruppe 'users', darauf zugreifen können:
 
-.. todo:: check samba permissions
-
 ::
 
-  sudo mkdir /srv/public
-  sudo chgrp users /srv/public
-  sudo chmod 775 /srv/public
+  $ sudo mkdir /srv/public
+  $ sudo chmod o-rwx /srv/public
+  $ sudo chgrp users /srv/public
+  $ sudo chmod g+sw /srv/public
 
 Zeile 1 legt das Verzeichnis (das Überverzeichnis **/srv** ist für
 solche Serverdienste reserviert, also nutzen wir das hier auch mal)
@@ -394,9 +393,9 @@ bereitstellen, welches in den folgenden Schritten erstellt wird
 
 ::
 
-    sudo apt-get install openssl
-    sudo mkdir /etc/apache2/ssl
-    sudo openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/ssl/apache.pem
+    $ sudo apt-get install openssl
+    $ sudo mkdir /etc/apache2/ssl
+    $ sudo openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/ssl/apache.pem
 
 Der Wert für **-days** kann dabei beliebig angepasst werden, je
 nachdem wie lange das Zertifikat gültig bleiben soll (z.B. ``-days
@@ -419,14 +418,14 @@ nachdem wie ernst man es mit seinem Server nimmt.
 
 ::
 
-  sudo ln -sf /etc/apache2/ssl/apache.pem /etc/apache2/ssl/\`/usr/bin/openssl x509 -noout -hash < /etc/apache2/ssl/apache.pem\`.0
-  sudo chmod 600 /etc/apache2/ssl/apache.pem
+  $ sudo ln -sf /etc/apache2/ssl/apache.pem /etc/apache2/ssl/\`/usr/bin/openssl x509 -noout -hash < /etc/apache2/ssl/apache.pem\`.0
+  $ sudo chmod 600 /etc/apache2/ssl/apache.pem
 
 Anschließend aktiviert man das SSL-Modul mit
 
 ::
 
-  sudo a2enmod ssl
+  $ sudo a2enmod ssl
 
 Dann muss dem Apache noch gesagt werden, wo seine Zertifikate liegen. Dazu werden in der Datei
 (``/etc/apache2/sites-available/default-ssl``) die Optionen ``SSLCertificateFile`` und
@@ -442,13 +441,13 @@ Danach wird diese Konfiguration noch aktiviert
 
 ::
 
-  sudo a2ensite default-ssl
+  $ sudo a2ensite default-ssl
 
 Und die Konfiguration des Apache-Server neu eingelesen:
 
 ::
 
-  sudo service apache2 force-reload
+  $ sudo service apache2 force-reload
 
 Nun sollte der Server auch unter der Adresse https://192.168.0.254
 ereichbar sein. Da das Zertifikat nicht signiert ist, wird man mit
@@ -472,8 +471,8 @@ Doch wie gesagt, dazu muss zunächst das Modul **mod_userdir** aktiviert und ans
 
 ::
 
-  sudo a2enmod userdir
-  sudo service apache2 force-reload
+  $ sudo a2enmod userdir
+  $ sudo service apache2 force-reload
 
 Ab Ubuntu 10.04 ist PHP in diesen Ordnern standardmäßig nicht erlaubt. Möchte man das Risiko dennoch eingehen sollte man der
 Datei ``/etc/apache2/mods-available/php5.conf`` zu folgendem Aussehen verhelfen:
@@ -502,7 +501,7 @@ Voranstellen von ``#`` auskommentiert werden. Danach mal wieder den Apache neu s
 
 ::
 
-  sudo service apache2 force-reload
+  $ sudo service apache2 force-reload
 
 .. _php:
 
@@ -513,13 +512,13 @@ Die Installation erfolgt mit:
 
 ::
 
-  sudo apt-get install php5
+  $ sudo apt-get install php5
 
 Anschließend muss der Apache neu gestartet werden:
 
 ::
 
-  sudo service apache2 restart
+  $ sudo service apache2 restart
 
 Zum testen der PHP-Installation sollten folgende Schritte genügen:
 
@@ -527,7 +526,7 @@ Erzeugen einer PHP-Datei im Hauptverzeichnis des Webservers:
 
 ::
 
-  sudo nano /var/www/info.php
+  $ sudo nano /var/www/info.php
 
 
 In der Datei sollte folgendes stehen:
@@ -560,7 +559,7 @@ MySQL
 
 ::
 
-  sudo apt-get install mysql-server phpmyadmin
+  $ sudo apt-get install mysql-server phpmyadmin
 
 Damit werden der `MySQL-Server 5 <http://mysql.com/>`_ und zur einfachen Administration dessen,
 `phpMyAdmin <http://www.phpmyadmin.net/>`_, samt aller Abhängigkeiten, installiert. Während der
@@ -597,7 +596,7 @@ DNS- und DHCP-Server
 
 ::
 
-  sudo apt-get install dnsmasq
+  $ sudo apt-get install dnsmasq
 
 Die Konfiguration des Servers muss dann in der Datei
 ``/etc/dnsmasq.conf`` geändert werden. Um den DHCP-Server zu
@@ -607,7 +606,7 @@ Netzwerkes angepasst werden.
 
 ::
 
-    dhcp-range=192.168.101.100,192.168.101.200,12h
+  dhcp-range=192.168.101.100,192.168.101.200,12h
 
 In diesem Beispiel werden Adressen im Bereich zwischen
 ``192.168.101.100`` und ``192.168.101.200`` vergeben und diese sind für
@@ -624,7 +623,7 @@ angelegt werden:
 
 ::
 
-    dhcp-host=11:22:33:44:55:66,rechner1,192.168.101.70
+  dhcp-host=11:22:33:44:55:66,rechner1,192.168.101.70
 
 Damit wird dem Rechner (der Netzwerkkarte) mit der MAC-Adresse
 ``11:22:33:44:55:66`` der Name *rechner1* und die IP

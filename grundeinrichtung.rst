@@ -29,13 +29,13 @@ Also entweder
 
 ::
 
-    vim /etc/network/interfaces
+    $ vim /etc/network/interfaces
 
 für Vim oder
 
 ::
 
-    nano /etc/network/interfaces
+    $ nano /etc/network/interfaces
 
 für Nano.
 
@@ -195,13 +195,13 @@ Automatische Upgrades
 Alternativ gibt es die Möglichkeit Updates automatisch installieren zu lassen.
 Dazu muss zunächst das Paket ``unattended-upgrades`` installiert werden:::
 
-  sudo apt-get install unattended-upgrades
+  $ sudo apt-get install unattended-upgrades
 
 Um die Automatik auch zu aktivieren sind noch ein paar kleine Einstellungen von
 nöten. Dazu schaut man sich zunächst die Konfigurationsdatei
 ``/etc/apt/apt.conf.d/50unattended-upgrades`` an:::
 
-  sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
+  $ sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
 
 Hier die Abschnitte der Datei im Detail:
 
@@ -398,5 +398,5 @@ Umgekehrt geht das natürlich auch:
 
 ::
 
-    host 192.168.101.211
+    $ host 192.168.101.211
     211.101.168.192.in-addr.arpa domain name pointer rechner2.
