@@ -101,7 +101,7 @@ Wenn man den DHCP-Server nicht so einstellen kann, dass er dem Server immer die
 gleiche Adresse zuweist sollte man eine feste IP-Adresse vergeben. Dazu muss
 der Eintrag für **eth0** folgendermaßen abgeändert werden:
 
-.. code-block:: bash
+.. code-block:: none
     :linenos:
 
     auto eth0
@@ -180,6 +180,12 @@ auf den aktuellen Stand gebracht werden. Ubuntu bringt dafür das Werkzeug
     der aktuelle Kernel überschrieben (geupgradet) wird, sondern der neue
     zusätzlich *installiert* wird. ``apt-get upgrade`` weist darauf hin, wenn
     solche Pakete verfügbar sind.
+
+``sudo apt-get autoremove``
+    Viele Pakete besitzen sogenannte Abhängigkeiten. Das sind andere Pakete, ohne die
+    das Paket das wir gerade installieren wollen nicht funktioniert. Bei der De-installation
+    bleiben solche Pakete gelegentlich ungenutzt im System liegen. Um diese loszuwerden, lohnt
+    es sich regelmäßig den Befehl ``apt-get autoremove`` auszuführen.
 
 Automatische Upgrades
 ~~~~~~~~~~~~~~~~~~~~~
