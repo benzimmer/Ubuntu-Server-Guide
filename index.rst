@@ -30,6 +30,7 @@ Inhalt:
     grundeinrichtung
     dienste
     anhang
+    changelog
     knownissues
 
 
