@@ -23,13 +23,14 @@ Still in beta
 Inhalt:
 
 .. toctree::
+    :maxdepth: 3
 
     einleitung
-    sicherheit
     installation
     grundeinrichtung
     dienste
     knownissues
+
 
 .. todolist::
 

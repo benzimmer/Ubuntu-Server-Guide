@@ -1,3 +1,5 @@
+.. todo: Kapitel Sicherheit
+
 Grundeinrichtung
 ================
 
@@ -251,6 +253,8 @@ Zeile 1 und 2 aktiviert das Aktualisieren der Paketlisten und das Herunterladen 
 Zeile 3 stellt das Intervall ein, in dem nicht mehr benötigte Pakete vom System entfernt werden.
 Zeile 4 schließlich erledigt die eigentliche Aktivierung des automatischen Aktualisierung.
 
+.. todo: Sicherheit verlinken
+
 .. warning::
 
     Das System sollte immer auf dem aktuellen Stand gehalten werden.
@@ -259,8 +263,8 @@ Zeile 4 schließlich erledigt die eigentliche Aktivierung des automatischen Aktu
     werden sowohl über eine `Mailingliste
     <https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce>`_
     als auch per `RSS <http://www.ubuntu.com/usn/rss.xml>`_ zur Verfügung
-    gestellt und gehören für jeden Ubuntu-Server-Betreiber zur 
-    absoluten Pflicht-Lektüre. (siehe auch :ref:`sicherheit`)
+    gestellt und gehören für jeden Ubuntu-Server-Betreiber zur
+    absoluten Pflicht-Lektüre.
 
 
 Die richtige Zeit vom Zeitserver
