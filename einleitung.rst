@@ -148,4 +148,5 @@ finden sich unter http://creativecommons.org/licenses/by-nc-sa/3.0/de/.
 
 Falls Fragen zur Verwendung auftauchen, wenden Sie sich bitte per Mail an
 zero@zeroathome.de oder per Jabber an `ben@einfachjabber.de <xmpp:ben@einfachjabber.de>`_.
-Zusätzlich gibt es einen Jabber-Chatraum (MUC) unter `chat@conference.einfachjabber.de <xmpp:chat@conference.einfachjabber.de>`_.
+Zusätzlich gibt es einen Jabber-Chatraum (MUC) unter
+`zeroathome.de@conference.einfachjabber.de <xmpp:zeroathome.de@conference.einfachjabber.de>`_.
