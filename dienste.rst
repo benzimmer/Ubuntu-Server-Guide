@@ -668,3 +668,7 @@ Weitere Möglichkeiten ergeben sich dadurch natürlich auch:
 Leitet zum Beispiel alle Anfragen an http://www.microsoft.de auf
 http://www.ubuntu.com um, praktisch nicht wahr? Nach jeder dieser
 Änderungen ist ein Neustart des dnsmasq-Daemons notwendig!
+
+::
+
+  $ sudo service dnsmasq restart
