@@ -365,6 +365,10 @@ wahrscheinlich bekanntester Vertreter ist der `Apache HTTP-Server
 Apache
 ~~~~~~
 
+Es sei hiermit erwähnt, dass es sich hierbei um eine absolute Standardinstallation von
+Apache handelt. Sie führt lediglich dazu das Dateien die unter ``/var/www`` abgelegt
+werden mit einem Webbrowser abgerufen werden können.
+
 ::
 
     $ sudo apt-get install apache2
@@ -380,26 +384,15 @@ können.
 
     Apache Testseite
 
-Bevor es richtig los geht, mit der Konfiguration, ein kleiner Hinweis. Bei einem Neustart des Apache Servers wird einigen diese Fehlermeldung auffallen::
-
-    apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1 for ServerName
-
-Da diese den Dienst des Servers nicht beeinträchtigt kann kann man sie entweder
-getrost ignorieren, oder um die Meldung verschwinden zu lassen, die Datei
-**/etc/apache2/httpd.conf** bearbeiten. In dieser wird am Ende die folgende
-Zeile angehangen::
-
-    ServerName localhost
-
-Danach sollte die Meldung bei einem Apache-Neustart nicht mehr auftauchen.
-
 SSL-Verschlüsselung
 ___________________
 
 Bei der Übermittlung von Passwörtern oder anderen geheimen Informationen (z.B.
 Dateien per WebDAV) sollte man darauf achten, dies nur über eine verschlüsselte
 Verbindung zu tun. Um diese zu ermöglichen, muss der Webserver ein Zertifikat
-bereitstellen, welches in den folgenden Schritten erstellt wird::
+bereitstellen, welches in den folgenden Schritten erstellt wird
+
+::
 
     sudo apt-get install openssl
     sudo mkdir /etc/apache2/ssl
@@ -429,35 +422,89 @@ nachdem wie ernst man es mit seinem Server nimmt.
   sudo ln -sf /etc/apache2/ssl/apache.pem /etc/apache2/ssl/\`/usr/bin/openssl x509 -noout -hash < /etc/apache2/ssl/apache.pem\`.0
   sudo chmod 600 /etc/apache2/ssl/apache.pem
 
-Anschließend aktiviert man das SSL-Modul:::
-
-  sudo a2enmod ssl
-
-Jetzt muss noch die Apache-Konfiguration angepasst werden. Dazu
-kopieren wir die aktuelle Konfiguration ohne SSL:::
-
-  sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/ssl
-
-Was den Vorteil hat, dass jetzt auch die normalen Seiten per SSL
-erreichbar sind. In der neuen Datei
-(``/etc/apache2/sites-available/ssl``) müssen folgende Einstellungen
-geändert werden. In den ersten beiden Zeilen der ssl-Datei sollte
-es heißen:
+Anschließend aktiviert man das SSL-Modul mit
 
 ::
 
-    NameVirtualHost *:443
-    <VirtualHost *:443>
+  sudo a2enmod ssl
 
-Als letzter Schritt wird der Apache-Server jetzt neu gestartet:::
+Dann muss dem Apache noch gesagt werden, wo seine Zertifikate liegen. Dazu werden in der Datei
+(``/etc/apache2/sites-available/default-ssl``) die Optionen ``SSLCertificateFile`` und
+``SSLCertificateKeyFile`` wie folgt geändert:
+
+::
+
+  SSLCertificateFile    /etc/apache2/ssl/apache.pem
+  SSLCertificateKeyFile /etc/apache2/ssl/apache.pem
+
+
+Danach wird diese Konfiguration noch aktiviert
+
+::
+
+  sudo a2ensite default-ssl
+
+Und die Konfiguration des Apache-Server neu eingelesen:
+
+::
 
   sudo service apache2 force-reload
 
-Nun sollte der Server auch unter der Adresse https://serveradresse
+Nun sollte der Server auch unter der Adresse https://192.168.0.254
 ereichbar sein. Da das Zertifikat nicht signiert ist, wird man mit
 einer Warnung begrüßt, die man aber auf dem eigenen Server getrost
-übersehen kann. Im WWW wäre ich mit solch unbedachten Aktionen eher
-vorsichtig!
+übersehen kann. Auf fremden Seiten sollte man solchen Warnungen eher skeptisch
+gegenüber stehen, vor allem wenn man auf der dahinter liegenden Seite aufgefordert
+wird seine Bankdaten einzugeben ;-)
+
+.. _userdir:
+
+Apache Benutzerverzeichnisse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In der Regel müssen Dateien, die vom Webserver bereitgestellt werden sollen unterhalb von ``/var/www`` liegen.
+Um auch Benutzern, ohne Rechte an diesem Verzeichnis, die Möglichkeit zu geben Webseiten oder Dateien per HTTP
+bereitzustellen gibt es **mod_userdir**. Ist dieses aktiviert kann der Benutzer in seinem Home-Verzeichnis einen
+Ordner namens ``public_html`` anlegen. Dort hinterlegte Dateien sind dann unter der Adresse http://192.168.0.254/~benutzername
+verfügbar.
+
+Doch wie gesagt, dazu muss zunächst das Modul **mod_userdir** aktiviert und anschließend der Apache neu geladen werden:
+
+::
+
+  sudo a2enmod userdir
+  sudo service apache2 force-reload
+
+Ab Ubuntu 10.04 ist PHP in diesen Ordnern standardmäßig nicht erlaubt. Möchte man das Risiko dennoch eingehen sollte man der
+Datei ``/etc/apache2/mods-available/php5.conf`` zu folgendem Aussehen verhelfen:
+
+::
+
+  <IfModule mod_php5.c>
+      <FilesMatch "\.ph(p3?|tml)$">
+    SetHandler application/x-httpd-php
+      </FilesMatch>
+      <FilesMatch "\.phps$">
+    SetHandler application/x-httpd-php-source
+      </FilesMatch>
+      # To re-enable php in user directories comment the following lines
+      # (from <IfModule ...> to </IfModule>.) Do NOT set it to On as it
+      # prevents .htaccess files from disabling it.
+      #<IfModule mod_userdir.c>
+      #   <Directory /home/*/public_html>
+      #      php_admin_value engine Off
+      #   </Directory>
+      #</IfModule>
+  </IfModule>
+
+In Worten: Die Zeilen zwischen ``<IfModule mod_userdir.c>`` und dem nächsten ``</IfModule>`` müssen durch
+Voranstellen von ``#`` auskommentiert werden. Danach mal wieder den Apache neu starten und fertig.
+
+::
+
+  sudo service apache2 force-reload
+
+.. _php:
 
 PHP
 ~~~
