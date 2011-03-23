@@ -6,9 +6,8 @@ Vorbereitungen
 
 .. todo:: Andere Installationsmöglichkeiten (Netinstall, USB)
 
-Zur Installation wird eine Installations-CD benötigt. Andere Möglichkeiten,
-siehe HIER.
-CD-Images oder `Torrents <http://de.wikipedia.org/wiki/BitTorrent>`_ 
+Zur Installation wird eine Installations-CD benötigt.
+CD-Images oder `Torrents <http://de.wikipedia.org/wiki/BitTorrent>`_
 (empfohlen) zum herunterladen finden sich hier:
 
 http://releases.ubuntu.com/lucid/

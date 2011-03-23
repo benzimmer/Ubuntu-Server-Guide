@@ -90,7 +90,7 @@ Aufgaben, die der Server nachher im Netz übernehmen wird:
 
 -  Fileserver für verschiedenste Clients (SMB, NFS, WebDAV, FTP)
 -  Webserver (inkl. PHP+MySQL)
--  DCHP-/DNS-Server
+-  DHCP-/DNS-Server
 
 ..
   -  Mailserver
