@@ -1,5 +1,10 @@
 .. _knownissues:
 
+Fehlende Anleitungen
+====================
+
+* RAID + LVM Konfiguration
+
 Bekannte Fehler
 ===============
 

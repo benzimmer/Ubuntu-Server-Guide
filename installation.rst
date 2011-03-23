@@ -25,8 +25,9 @@ Bootreihenfolge umzustellen (siehe Kasten `Bootreihenfolge ändern
 <#bootreihenfolge>`_)
 
 .. _bootreihenfolge:
+
 .. note:: **Bootreihenfolge ändern**
-    
+
     Damit der Rechner von der Installations-CD startet, muss kurz nach dem
     Einschalten des Rechners ins BIOS (Basic Input Output System) gewechselt
     werden. Das geschieht bei den meisten Rechnern durch drücken der *Entf*,

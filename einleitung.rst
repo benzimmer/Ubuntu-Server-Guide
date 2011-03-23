@@ -17,7 +17,7 @@ konzentriert sich dieser Guide: Den Linux-Server. Als
 `Distribution <http://de.wikipedia.org/wiki/Linux-Distribution>`_ wird die
 `Ubuntu Server Edition 
 <http://www.ubuntu.com/products/whatisubuntu/serveredition>`_
-in der aktuellen :abbr:`LTS (Long-Term-Support)` Version 10.04 verwendet.
+in der aktuellen :abbr:`LTS (Long-Term-Support)` Version 10.04.2 verwendet.
 
 Kleine Warnung vorweg
 ---------------------
@@ -66,7 +66,9 @@ Festplatten
     `SSD <http://de.wikipedia.org/wiki/Solid_State_Drive>`_ 
     oder USB-Stick)
 
-    2 x mind. 500GB für Daten gespiegelt im `RAID <http://de.wikipedia.org/wiki/RAID>`_ 1
+..    2 x mind. 500GB für Daten gespiegelt im `RAID <http://de.wikipedia.org/wiki/RAID>`_-1
+
+.. todo: RAID + LVM Konfiguration
 
 Netzwerk
     1 x mind. 100Mbit (besser 1000Mbit) Netzwerkkarte
@@ -74,7 +76,7 @@ Netzwerk
 Des weiteren werden natürlich Monitor und Tastatur (nur zur Installation)
 sowie ein CD-Laufwerk (bei Installation von CD) benötigt.
 
-Es sollte dabei jedem klar sein, das diese Empfehlung eher für den 
+Es sollte dabei jedem klar sein, das diese Empfehlung eher für den
 Heimgebrauch oder für kleine Büros oder Betriebe gilt. Grundsätzlich
 sollte sich die Hardware-Ausstattung am Einsatzzweck orientieren. Je mehr
 Benutzer gleichzeitig auf dem Server arbeiten, sprich auf Daten zugreifen,
@@ -87,9 +89,12 @@ Features
 Aufgaben, die der Server nachher im Netz übernehmen wird:
 
 -  Fileserver für verschiedenste Clients (SMB, NFS, WebDAV, FTP)
--  Print-Server (mit Unterstützung für Druck in PDF-Dateien)
--  Webserver
--  Mailserver
+-  Webserver (inkl. PHP+MySQL)
+-  DCHP-/DNS-Server
+
+..
+  -  Mailserver
+  -  Print-Server (mit Unterstützung für Druck in PDF-Dateien)
 
 Es wird keine grafische Oberfläche auf dem Server laufen und wird
 ausschließlich per Konsole im Textmodus administrierbar sein. Das spart
@@ -102,20 +107,24 @@ Konventionen
 
 In diesem Dokument wird relativ häufig auf der Kommandozeile des Linux-Systems
 gearbeitet. Die einzugebenden Textzeilen sind durch eine graue Box
-gekennzeichnet:
+mit einem **$** am Anfang gekennzeichnet:
 
 ::
 
     $ sudo apt-get update
 
-Falls ein Befehl zu lang ist für eine Zeile wird dieser in der nächsten Zeile
-fortgeführt. Gekennzeichnet wird das durch einen Pfeil:
+Zu bearbeitende Konfigurationsdateien werden ebenfalls grau hinterlegt und
+eventuell mit Zeilennummern zur besseren Orientierung versehen:
 
-.. todo:: Zeilenumbrüche testen
+.. code-block:: none
+    :linenos:
 
-::
-
-    $ sudo openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/ssl/apache.pem
+    auto eth0
+    iface eth0 inet static
+      address 192.168.0.254
+      netmask 255.255.255.0
+      gateway 192.168.0.1
+      dns-nameservers 192.168.0.1
 
 Disclaimer
 ----------
@@ -135,7 +144,8 @@ Lizenz
 Dieses Werk ist unter einem `Creative Commons <http://creativecommons.org>`_
 "Namensnennung-Keine kommerzielle Nutzung-Weitergabe unter gleichen
 Bedingungen 3.0 Deutschland" Lizenzvertrag lizenziert. Die komplette Lizenz
-finden Sie unter http://creativecommons.org/licenses/by-nc-sa/3.0/de/.
+finden sich unter http://creativecommons.org/licenses/by-nc-sa/3.0/de/.
 
-Falls Sie Fragen zur Verwendung haben, wenden Sie sich bitte per Mail an
-zero@zeroathome.de oder per Jabber an ben@einfachjabber.de
+Falls Fragen zur Verwendung auftauchen, wenden Sie sich bitte per Mail an
+zero@zeroathome.de oder per Jabber an `ben@einfachjabber.de <xmpp:ben@einfachjabber.de>`_.
+Zusätzlich gibt es einen Jabber-Chatraum (MUC) unter `chat@conference.einfachjabber.de <xmpp:chat@conference.einfachjabber.de>`_.
