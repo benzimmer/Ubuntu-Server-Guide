@@ -513,7 +513,7 @@ Die Installation erfolgt mit:
 
 ::
 
-  sudo apt-get install php5 libapache2-mod-php5 php5-mysql php5-cgi php5-gd php5-mcrypt
+  sudo apt-get install php5
 
 Anschließend muss der Apache neu gestartet werden:
 
@@ -527,7 +527,7 @@ Erzeugen einer PHP-Datei im Hauptverzeichnis des Webservers:
 
 ::
 
-  sudo nano /srv/www/info.php
+  sudo nano /var/www/info.php
 
 
 In der Datei sollte folgendes stehen:
@@ -537,9 +537,8 @@ In der Datei sollte folgendes stehen:
     <?php phpinfo(); ?>
 
 Speichern und im Browser die Adresse
-http://192.168.0.254/info.php aufrufen worauf die folgende Seite
-(Abb. fig:phpinfo) zu sehen sein sollte (die Versionsnummer von PHP
-unter Ubuntu 10.04 ist zur Zeit 5.3.2):
+http://192.168.0.254/info.php aufrufen worauf die folgende Seite zu sehen sein sollte
+(die Versionsnummer von PHP unter Ubuntu 10.04.2 ist zur Zeit 5.3.2):
 
 .. figure:: images/phpinfo.png
     :align: center
