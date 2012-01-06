@@ -199,17 +199,26 @@ Verzeichnisses auf **users** und Zeile 4 sorgt dafür das neu
 angelegte Verzeichnisse immer der Gruppe **users** gehören. (mehr zum
 Thema Rechte unter http://wiki.ubuntuusers.de/Rechte)
 
+Anschließend muss die Gruppe **users** angelegt werden und die Benutzer die
+Zugriffsrechte auf das Verzeichnis haben sollen noch der Gruppe hinzugefügt
+werden:
+
+::
+
+  $ sudo addgroup users
+  $ sudo usermod -G users benutzer1
+
 Dann wird die Freigabe in die ``smb.conf`` eingetragen:
 
 ::
 
-    [public]
-      comment = Freigabe fuer jedermann
-      path = /srv/public
-      writeable = yes
-      valid users = @users
-      force directory mode = 0775
-      force create mode = 0775
+  [public]
+    comment = Freigabe fuer jedermann
+    path = /srv/public
+    writeable = yes
+    valid users = @users
+    force directory mode = 0775
+    force create mode = 0775
 
 In der Zeile comment gibt man am besten eine Beschreibung des
 Verzeichnisses an (kann auch weggelassen werden), in der Zeile path
