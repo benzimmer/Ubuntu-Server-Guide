@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.9.1.1
+-------
+* Fix fuer falsches Kommando zum neu starten des Netzwerks
+
 0.9.1
 -----
 

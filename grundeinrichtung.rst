@@ -146,7 +146,7 @@ werden:
 
 ::
 
-    $ sudo service networking restart
+    $ sudo /etc/init.d/networking restart
 
 Zum Abschluss der Konfiguration sollte noch  getestet werden, ob der Zugriff
 zum Internet auch funktioniert.
